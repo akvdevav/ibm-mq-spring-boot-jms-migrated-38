@@ -1,22 +1,14 @@
 package com.tongyy.listener;
 
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.MessageListener;
-import javax.jms.TextMessage;
+import org.springframework.amqp.rabbit.annotation.Queue;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.stereotype.Component;
 
-public class PrintListener implements MessageListener {
+@Component
+public class PrintListener {
 
-	public void onMessage(Message message) {
-		if (message instanceof TextMessage) {
-			try {
-				System.out.println(((TextMessage) message).getText());
-			} catch (JMSException ex) {
-				throw new RuntimeException(ex);
-			}
-		} else {
-			throw new IllegalArgumentException("Message type must be a TextMessage");
-		}
-	}
-
+    @RabbitListener(queuesToDeclare = @Queue(name = "print-queue"))
+    public void onMessage(String message) {
+        System.out.println(message);
+    }
 }

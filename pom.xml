@@ -24,16 +24,9 @@
 			<artifactId>spring-boot-starter</artifactId>
 		</dependency>
 
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-jms</artifactId>
-		</dependency>
+		
 
-		<dependency>
-			<groupId>javax.jms</groupId>
-			<artifactId>javax.jms-api</artifactId>
-			<version>2.0.1</version>
-		</dependency>
+		
 
 		<dependency>
 			<groupId>com.ibm.mq</groupId>
@@ -47,5 +40,15 @@
 			<scope>test</scope>
 		</dependency>
 
-	</dependencies>
+	
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.amqp</groupId>
+            <artifactId>spring-rabbit-stream</artifactId>
+            <version>3.2.9</version>
+        </dependency>
+    </dependencies>
 </project>
