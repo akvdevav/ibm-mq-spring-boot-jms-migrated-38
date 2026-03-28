@@ -7,9 +7,11 @@ import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 
 @Configuration
 public class JmsConfig {
@@ -65,5 +67,20 @@ public class JmsConfig {
         RabbitTemplate template = new RabbitTemplate(rabbitConnectionFactory);
         template.setReplyTimeout(timeout);
         return template;
+    }
+
+    /**
+     * Primary SimpleMessageListenerContainer bean to satisfy autowiring in components
+     * that expect a single container instance (e.g., ContainerChecker).
+     * This container listens on the configured queue.
+     */
+    @Bean
+    @Primary
+    public SimpleMessageListenerContainer defaultContainer(ConnectionFactory connectionFactory,
+                                                          Queue appQueue) {
+        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer(connectionFactory);
+        container.setQueueNames(appQueue.getName());
+        container.setAutoStartup(true);
+        return container;
     }
 }

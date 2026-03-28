@@ -50,7 +50,6 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <!-- No scope so the driver is available at compile and runtime -->
         </dependency>
 
         <!-- Redis (Valkey) support -->

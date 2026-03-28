@@ -11,6 +11,16 @@ servers:
     password: guest
 
 spring:
+  rabbitmq:
+    host: ${servers.mq.host}
+    port: ${servers.mq.port}
+    username: ${servers.mq.username}
+    password: ${servers.mq.password}
+    listener:
+      simple:
+        concurrency: 1
+        max-concurrency: 1
+        acknowledge-mode: auto
   datasource:
     url: jdbc:postgresql://localhost:5432/postgres
     username: postgres

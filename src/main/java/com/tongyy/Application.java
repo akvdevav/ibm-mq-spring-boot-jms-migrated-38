@@ -1,11 +1,15 @@
 package com.tongyy;
 
+import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
+import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.TopicExchange;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 import javax.sql.DataSource;
 
@@ -37,5 +41,27 @@ public class Application {
         ds.setPassword(dbPassword);
         ds.setDriverClassName(dbDriverClassName);
         return ds;
+    }
+
+    // Listener container for the queue defined in JmsConfig
+    @Bean(name = "queueContainer")
+    public SimpleMessageListenerContainer queueContainer(ConnectionFactory connectionFactory,
+                                                         Queue appQueue) {
+        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer(connectionFactory);
+        container.setQueueNames(appQueue.getName());
+        container.setAutoStartup(true);
+        return container;
+    }
+
+    // Listener container for the topic exchange defined in JmsConfig
+    @Bean(name = "topicContainer")
+    public SimpleMessageListenerContainer topicContainer(ConnectionFactory connectionFactory,
+                                                         Queue appQueue,
+                                                         TopicExchange appExchange) {
+        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer(connectionFactory);
+        // Reuse the same queue bound to the topic exchange via JmsConfig binding
+        container.setQueueNames(appQueue.getName());
+        container.setAutoStartup(true);
+        return container;
     }
 }
