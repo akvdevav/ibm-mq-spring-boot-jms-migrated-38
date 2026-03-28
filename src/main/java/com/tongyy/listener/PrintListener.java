@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class PrintListener {
 
-    @RabbitListener(queues = "print-queue")
+    @RabbitListener(queues = "${servers.mq.queue}")
     public void onMessage(String message) {
         System.out.println(message);
     }

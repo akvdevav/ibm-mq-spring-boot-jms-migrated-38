@@ -37,7 +37,9 @@ public class JmsConfig {
 
     @Bean
     public ConnectionFactory rabbitConnectionFactory() {
-        CachingConnectionFactory factory = new CachingConnectionFactory(host, port);
+        CachingConnectionFactory factory = new CachingConnectionFactory();
+        factory.setHost(host);
+        factory.setPort(port);
         factory.setUsername(username);
         factory.setPassword(password);
         return factory;

@@ -7,3 +7,18 @@ servers:
     queue: ONE.QUEUE
     topic: ONE/TOPIC
     timeout: 2000
+    username: guest
+    password: guest
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+  redis:
+    host: localhost
+    port: 6379
